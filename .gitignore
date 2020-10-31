@@ -1,20 +1,11 @@
 
-*.rmod
-IgnoreBuildCollision/obj/x86/Debug/PlaceAnywhere.csprojAssemblyReference.cache
-IgnoreBuildCollision/obj/Debug/PlaceAnywhere.csprojAssemblyReference.cache
-IgnoreBuildCollision/obj/Debug/IgnoreBuildCollision.csprojAssemblyReference.cache
-IgnoreBuildCollision/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 IgnoreBuildCollision/icon.png
 IgnoreBuildCollision/Banner.xcf
 IgnoreBuildCollision/banner.jpg
-IgnoreBuildCollision/.vs/IgnoreBuildCollision/v16/Server/sqlite3/storage.ide
-IgnoreBuildCollision/.vs/IgnoreBuildCollision/v16/Server/sqlite3/db.lock
-IgnoreBuildCollision/.vs/IgnoreBuildCollision/v16/.suo
 IgnoreBuildCollision.sln
 build.bat
-.vs/PlaceAnywhere/v16/Server/sqlite3/storage.ide
-.vs/PlaceAnywhere/v16/Server/sqlite3/db.lock
-.vs/PlaceAnywhere/v16/.suo
-.vs/IgnoreBuildCollision/v16/Server/sqlite3/storage.ide
-.vs/IgnoreBuildCollision/v16/Server/sqlite3/db.lock
-.vs/IgnoreBuildCollision/v16/.suo
+*.rmod
+.vs/*
+IgnoreBuildCollision/.vs/*
+IgnoreBuildCollision/bin/*
+IgnoreBuildCollision/obj/*
