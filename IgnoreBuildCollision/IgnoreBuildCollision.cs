@@ -47,25 +47,36 @@ public class HarmonyPatch_IgnoreCollisionOnAlt
     }
 }
 
-[HarmonyPatch(typeof(Pipe), "GetNearbyPipes")]
-public class HarmonyPatch_ConnectPipesThroughWalls
-{
-    [HarmonyPostfix]
-    static void IgnoreWalls(ref List<Pipe> __result, Pipe ___pipe, Pipe ___pipe2, Pipe ___pipe3, Pipe ___pipe4, Pipe ___pipe5, Pipe ___pipe6)
-    {
-        List<Pipe> list = new List<Pipe>();
+//[HarmonyPatch(typeof(Pipe), "GetNearbyPipes")]
+//public class HarmonyPatch_ConnectPipesThroughWalls
+//{
+//    [HarmonyPrefix]
+//    static bool IgnoreWalls(ref List<Pipe> __result, Pipe __instance)
+//    {
+//        //Do usual method without bitmasking for neighbours
+//        List<Pipe> list = new List<Pipe>();
+//        Pipe pipe = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition + Vector3.forward * 1.5f);
+//        Pipe pipe2 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition - Vector3.forward * 1.5f);
+//        Pipe pipe3 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition - Vector3.right * 1.5f);
+//        Pipe pipe4 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition + Vector3.right * 1.5f);
+//        Pipe pipe5 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition + Vector3.up * 1.21f);
+//        Pipe pipe6 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition - Vector3.up * 1.21f);
 
-        list.AddUniqueOnly(___pipe);
-        list.AddUniqueOnly(___pipe2);
-        list.AddUniqueOnly(___pipe3);
-        list.AddUniqueOnly(___pipe4);
-        list.AddUniqueOnly(___pipe5);
-        list.AddUniqueOnly(___pipe6);
+//        list.AddUniqueOnly(pipe);
+//        list.AddUniqueOnly(pipe2);
+//        list.AddUniqueOnly(pipe3);
+//        list.AddUniqueOnly(pipe4);
+//        list.AddUniqueOnly(pipe5);
+//        list.AddUniqueOnly(pipe6);
 
-        if (!list.ContainsItems<Pipe>())
-        {
-            __result = null;
-        }
-        else { __result = list; }
-    }
-}
+//        if (!list.ContainsItems<Pipe>())
+//        {
+//            __result = null;
+//        }
+//        else { __result = list; }
+
+//        //Dont execute origial method
+//        return false;
+//    }
+//}
+//Currently Unworking
