@@ -47,36 +47,47 @@ public class HarmonyPatch_IgnoreCollisionOnAlt
     }
 }
 
-//[HarmonyPatch(typeof(Pipe), "GetNearbyPipes")]
-//public class HarmonyPatch_ConnectPipesThroughWalls
+//Fix pipe through wall functionality but not visuals
+[HarmonyPatch(typeof(Pipe), "GetNearbyPipes")]
+public class HarmonyPatch_ConnectPipesThroughWalls
+{
+    [HarmonyPrefix]
+    static bool IgnoreWalls(ref List<Pipe> __result, Pipe __instance)
+    {
+        //Do usual method without bitmasking for neighbours
+        List<Pipe> list = new List<Pipe>();
+        Pipe pipe = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition + Vector3.forward * 1.5f);
+        Pipe pipe2 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition - Vector3.forward * 1.5f);
+        Pipe pipe3 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition - Vector3.right * 1.5f);
+        Pipe pipe4 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition + Vector3.right * 1.5f);
+        Pipe pipe5 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition + Vector3.up * 1.21f);
+        Pipe pipe6 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition - Vector3.up * 1.21f);
+
+        list.AddUniqueOnly(pipe);
+        list.AddUniqueOnly(pipe2);
+        list.AddUniqueOnly(pipe3);
+        list.AddUniqueOnly(pipe4);
+        list.AddUniqueOnly(pipe5);
+        list.AddUniqueOnly(pipe6);
+
+        if (!list.ContainsItems<Pipe>())
+        {
+            __result = null;
+        }
+        else { __result = list; }
+
+        //Dont execute origial method
+        return false;
+    }
+}
+
+////Fix pipe through wall visuals
+//[HarmonyPatch(typeof(Block_Pipe), "I need to figure this out")]
+//public class HarmonyPatch_ConnectPipeVisualsThroughWalls
 //{
 //    [HarmonyPrefix]
-//    static bool IgnoreWalls(ref List<Pipe> __result, Pipe __instance)
+//    static bool IgnoreWallVisuals()
 //    {
-//        //Do usual method without bitmasking for neighbours
-//        List<Pipe> list = new List<Pipe>();
-//        Pipe pipe = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition + Vector3.forward * 1.5f);
-//        Pipe pipe2 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition - Vector3.forward * 1.5f);
-//        Pipe pipe3 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition - Vector3.right * 1.5f);
-//        Pipe pipe4 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition + Vector3.right * 1.5f);
-//        Pipe pipe5 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition + Vector3.up * 1.21f);
-//        Pipe pipe6 = PipeGroupManager.GetPipeFromPosition(__instance.snappedBuildingPosition - Vector3.up * 1.21f);
-
-//        list.AddUniqueOnly(pipe);
-//        list.AddUniqueOnly(pipe2);
-//        list.AddUniqueOnly(pipe3);
-//        list.AddUniqueOnly(pipe4);
-//        list.AddUniqueOnly(pipe5);
-//        list.AddUniqueOnly(pipe6);
-
-//        if (!list.ContainsItems<Pipe>())
-//        {
-//            __result = null;
-//        }
-//        else { __result = list; }
-
-//        //Dont execute origial method
-//        return false;
+//        return true;
 //    }
 //}
-//Currently Unworking
