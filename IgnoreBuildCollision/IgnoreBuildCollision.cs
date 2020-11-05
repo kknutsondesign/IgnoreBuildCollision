@@ -81,13 +81,16 @@ public class HarmonyPatch_ConnectPipesThroughWalls
     }
 }
 
-////Fix pipe through wall visuals
-//[HarmonyPatch(typeof(Block_Pipe), "I need to figure this out")]
-//public class HarmonyPatch_ConnectPipeVisualsThroughWalls
-//{
-//    [HarmonyPrefix]
-//    static bool IgnoreWallVisuals()
-//    {
-//        return true;
-//    }
-//}
+//Fix pipe through wall visuals
+[HarmonyPatch(typeof(BitmaskTile), "ExcludeOutOfSightNeighbours")]
+public class HarmonyPatch_ConnectPipeVisualsThroughWalls
+{
+    [HarmonyPrefix]
+    static bool IgnoreWallVisuals(BitmaskTile __instance)
+    {
+        if(__instance.BitmaskType == TileBitmaskType.Pipe || __instance.BitmaskType == TileBitmaskType.Pipe_Water)
+            return false;
+
+        return true;
+    }
+}
