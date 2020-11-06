@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using HarmonyLib;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using System.Reflection;
+using System.Linq;
 
 public class IgnoreBuildCollision : Mod
 {
@@ -92,5 +94,34 @@ public class HarmonyPatch_ConnectPipeVisualsThroughWalls
             return false;
 
         return true;
+    }
+}
+
+//Fix Host rechecking overlapping blocks on receiving client block place messages
+[HarmonyPatch(typeof(BlockCreator), "Deserialize")]
+public class HarmonyPatch_HostIgnoresOverlappingBlocksFromClient
+{
+    [HarmonyTranspiler]
+    static IEnumerable<CodeInstruction> IgnoreCheckForOverlapping(IEnumerable<CodeInstruction> instructions)
+    {
+        //Fingerprint of code to be patched
+        MethodInfo isOverlappingInfo = AccessTools.Method(typeof(Block), nameof(Block.IsOverlapping));
+
+        var codes = new List<CodeInstruction>(instructions);
+        for(int i=0; i<codes.Count;i++)
+        {
+            //Search for fingerprint
+            if (codes[i].opcode == OpCodes.Callvirt && codes[i].operand as MethodInfo == isOverlappingInfo )
+            {
+                //Overwrite codeblock with Nops to remove functionality
+                codes[i - 1].opcode = OpCodes.Nop;
+                codes[i].opcode = OpCodes.Nop;
+                codes[i + 1].opcode = OpCodes.Nop;
+                break;
+            }
+        }
+
+        //Give back changed instruction set
+        return codes.AsEnumerable();
     }
 }
